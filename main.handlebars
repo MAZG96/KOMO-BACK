@@ -1,0 +1,158 @@
+<style>
+
+     @media screen and (max-width: 420px) {
+            body {
+               
+            }
+         }
+
+      @media screen and (min-width: 420px) {
+           body{
+          padding-left: 20%;
+          padding-right: 20%;
+           }
+         }
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+}
+
+.contenedor{
+     text-align: center;
+     align-items: center;
+}
+
+.logo{
+     width: 50%;
+}
+
+.grid-container-100 {
+  display: grid;
+  grid-template-columns: auto;
+  padding-left: 10%;
+     padding-right: 10%;
+
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.img-producto{
+    width: 30%;    
+    height: 100px;
+    float: right;
+    object-fit: cover;
+}
+.texto-producto{
+     width: 60%;
+float: left;
+}
+</style>
+
+
+<body>
+
+<h1 style="text-align: center"><img class="logo" src="https://komolocalfoods.com/assets/productos/komo-logo.png"></h1>
+
+{{#if id}}
+
+<h1 style="text-align: center;padding-bottom: 20px;">Resumen Pedido: #{{id}}</h1>
+
+<div class="grid-container">
+
+     <div class="grid-item"
+     style="padding: 10px; border: 1px solid black"
+     >
+
+          <h3 style="text-align: center;">Datos de Facturación</h3>
+          <p>Nombre: {{nombre}}</p>
+          <p>Apellidos: {{apellidos}}</p>
+          <p>Direccion: {{calle}}, {{piso}} {{localidad}}, {{codigo_postal}}</p>
+          <p>Provincia: {{provincia}}</p>
+          <p>Telefono: {{telefono}}</p>
+          <p>Precio total: {{total}} €</p>
+
+     </div>
+
+     <div class="grid-item"
+     style="padding: 10px; border: 1px solid black"
+     >
+
+     <h3 style="text-align: center;">Detalles del pago: </h3>
+     <p>Estado: Realizado</p>
+     <p>Fecha: {{createdAt}}</p>
+     
+     
+
+     </div>
+
+  
+
+</div>
+
+<h2 style="text-align: center;padding-bottom: 20px;">Productos: </h2>
+
+<div class="grid-container-100">
+
+      {{#each productos}}
+        <div class="grid-item"
+     style="padding: 10px; border: 1px solid black"
+     >
+     <div class="texto-producto">
+    
+     <h2>{{this.nombre}}</h2>
+     <h3>{{this.precio}}€ x {{this.cantidad}}uds</h3>
+     {{#if this.pago_recogida}}
+     Pago en recogida
+     {{/if}}
+    
+
+     </div>
+     
+     <img class="img-producto" src={{this.foto}} >
+     
+
+
+     </div> 
+{{/each}}
+
+ <h6>* Acceda a la aplicación <a href="https://komolocalfoods.com/productos/cuenta">KOMO LOCAL FOODS</a> 
+     y busque los detalles del pedido en Cuenta -> Comprados en el pedido con id #{{id}}</h6>
+     
+  </div>
+
+  {{/if}}
+
+  {{#if token}}
+  <div class="contenedor">
+     <h1 style="text-align: center;padding-bottom: 20px;">Bienvenido a KOMOLOCALFOODS</h1>
+     <h3 style="text-align: center;">Pulsa el botón para activar tu cuenta</h3>
+      <h4 style="text-align: center;">
+     <a href='https://komolocalfoods.com/auth/confirmacion/{{token}}' target='_blank'>
+<input type='button' style='padding-left:10px;padding-top:10px;padding-right:10px;padding-bottom:10px;margin-left:10px;margin-top:10px;margin-right:10px;margin-bottom:10px;background-color:#000000;color:#FFFFFF;border-left-width:1px;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-color:#000000;border-radius:5px;cursor:pointer' value='Activar Cuenta!' onMouseOver=this.style.backgroundColor='#ffffff';this.style.color='#000000';this.style.borderColor='#000000' onMouseOut=this.style.backgroundColor='#000000';this.style.color='#FFFFFF';this.style.borderColor='#000000' />
+</a></h4>
+  </div>
+
+  {{/if}}
+
+  {{#if token_recuperacion}}
+  <div class="contenedor">
+     <h1 style="text-align: center;padding-bottom: 20px;">Hola, {{nombre}}</h1>
+     <h3 style="text-align: center;">Pulsa el botón para restablecer la contraseña</h3>
+     <h4 style="text-align: center;">
+     <a href='https://komolocalfoods.com/auth/restablecer/{{token_recuperacion}}' target='_blank' style="text-align: center">
+<input type='button' style='padding-left:10px;padding-top:10px;padding-right:10px;padding-bottom:10px;margin-left:10px;margin-top:10px;margin-right:10px;margin-bottom:10px;background-color:#000000;color:#FFFFFF;border-left-width:1px;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-color:#000000;border-radius:5px;cursor:pointer' value='Restablecer contraseña' 
+onMouseOver=this.style.backgroundColor='#ffffff';this.style.color='#000000';this.style.borderColor='#000000' 
+onMouseOut=this.style.backgroundColor='#000000';this.style.color='#FFFFFF';this.style.borderColor='#000000' />
+</a></h4>
+  </div>
+
+  {{/if}}
+
+</body> 
+
+
