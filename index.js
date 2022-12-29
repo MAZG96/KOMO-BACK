@@ -66,12 +66,12 @@ const sendPush = (req,res) => {
   }
 
   const token = {
-    "endpoint": "https://wns2-db5p.notify.windows.com/w/?token=BQYAAACfYbBR6ShnKkjhXdl6YRo68mQUQa%2bVQYs6OMdr8AZSVSYH3U06DASemlcCbkldYXFUePYUB4r8DYYWQec1I5r3Wretr0Gkbwoqfts7U1Yb1Vqhl30BW76u0VlfZnv1xwhJHl4IYMeTRsLd3Kg%2feILGj%2bIlz9sGLhKkRktRVwcwiyKPjuZd4v1hITE5gv4r%2bQ%2b%2fvGmSNURsE2a44Hl5Ea2aIuGQYWDGwW11l8hDu6rln5AiEqtOFJ%2bJvbTwfNpa%2bfjWZSGXdzN37ssQZGbuWlZokSbrUu97eXYmY9ZsaF%2fEuDJYVlUCNKkcHtQ%2f4WZCoLc%3d",
+    "endpoint": "https://fcm.googleapis.com/fcm/send/fUlMiP2E3fE:APA91bGl3RAEaONuIrluCtlLNaqrU22Nv3g0e2LbWBwojjS7vpER3uTjgsjzYEiQoFzrdo9og4pyJ6vhE-i7A7w8kZSUE_ijFktc4uN9JQBSPlaor8t_tvI6POoSxOqW1mlB0WWWvqwg",
     "expirationTime": null,
     "keys": 
     {
-      "auth": "w0tY1iKdYvnTkXAASSdkOw",
-      "p256dh": "BMuphIeNFRmtud_VPY-_3uj-lZL2G49MM8CC3fMJSHi_WAFyBPQIThXi0-6DDhw6etNW2uJUp4-K1DWxSCUGG4c"
+      "auth": "Sz8iz-_bYakd11eJj-BMaQ",
+      "p256dh": "BOXTVPW4HksPdHvFTtpK-7AQ9Z8zrTmWL8meWpRtQwf83TuT7rxK44DJYD5tsBHvykuNzPmxrg31UE2C3-G_UD0"
     }
   }
 
@@ -335,6 +335,8 @@ app.use('/api/info-usuario', require('./routes/info-usuario'));
 app.use('/api/comentarios/', require('./routes/comentario'));
 app.use('/api/favoritos/', require('./routes/favorito'));
 app.use('/api/zonas/', require('./routes/zona'));
+app.use('/api/notificaciones/', require('./routes/notificacion'));
+
 
 
 
