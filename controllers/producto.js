@@ -91,6 +91,28 @@ const listarProductoUsuario = (req, res) => {
 }
 
 
+const listarSugerenciasProductos = (req, res) => {
+  productoModel.findAll({
+    where: {
+      nombre: {
+        //[Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
+        [Op.like]: '%'+req.params.q+'%'
+
+      }
+
+   },
+   order: [
+    Sequelize.literal('rand()')
+  ],
+   limit: 12,
+  })
+    .then(productos => 
+      res.json(productos))
+    .catch(err => res.json({ error: err }))
+    
+}
+
+
 
 
 
@@ -213,6 +235,7 @@ module.exports = {
   listarProducto,
   insertarProducto,
   getProducto,
+  listarSugerenciasProductos,
   listarProductoUsuario,
   listarProductosCategorias,
   deleteProducto,

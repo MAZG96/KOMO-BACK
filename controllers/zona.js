@@ -1,20 +1,21 @@
 const { response } = require("express");
 const zonaModel = require("../models/Zona");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
+
 
 
 
 
 //POST
 const insertarZona = (req, res) => {
-  const { nombre, provincia,direccion, horario } = req.body;
+  const { nombre, provincia,cp_inicio, cp_fin } = req.body;
 
   
   zonaModel.create({
     nombre,
     provincia,
-    direccion,
-    horario
+    cp_inicio,
+    cp_fin
   })
     .then(zona => res.send(zona));
 }
@@ -51,6 +52,27 @@ const getZona = (req, res) => {
     
 }
 
+const getZonaCP = (req, res) => {
+
+  let codigo_postal = Number(req.params.cp);
+
+  zonaModel.findOne({
+    where: {
+      
+      cp_inicio: {
+        [Op.lte]: codigo_postal
+      },
+      cp_fin:{
+        [Op.gte]: codigo_postal
+      }
+    }
+  })
+    .then(zona => 
+      res.json(zona))
+    .catch(err => res.json({ error: err }))
+    
+}
+
 const listarZonasProvincia = (req,res) => {
   
   zonaModel.findAll({
@@ -66,7 +88,7 @@ const listarZonasProvincia = (req,res) => {
 
 
 const updateZona = (req, res) => {
-  const { nombre, direccion, horario, provincia } = req.body;
+  const { nombre, provincia, cp_inicio, cp_fin } = req.body;
 
   console.log(req.body);
 
@@ -74,8 +96,8 @@ const updateZona = (req, res) => {
   {
     nombre,
     provincia,
-    direccion,
-    horario
+    cp_inicio,
+    cp_fin
   },
   {
   where: {id: req.params.id}
@@ -100,5 +122,6 @@ module.exports = {
   getZona,
   listarZonasProvincia,
   deleteZona,
-  updateZona
+  updateZona,
+  getZonaCP
 };

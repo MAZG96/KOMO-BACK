@@ -336,6 +336,8 @@ app.use('/api/comentarios/', require('./routes/comentario'));
 app.use('/api/favoritos/', require('./routes/favorito'));
 app.use('/api/zonas/', require('./routes/zona'));
 app.use('/api/notificaciones/', require('./routes/notificacion'));
+app.use('/api/ups/', require('./routes/ups'));
+
 
 
 

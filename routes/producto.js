@@ -1,6 +1,6 @@
 const{ Router } = require('express');
 const{ check } = require('express-validator');
-const{ listarProductosCategorias,listarProducto,insertarProducto,getProducto, listarProductoUsuario ,deleteProducto,updateProducto } = require('../controllers/producto');
+const{ listarProductosCategorias,listarProducto,insertarProducto,getProducto,listarSugerenciasProductos, listarProductoUsuario ,deleteProducto,updateProducto } = require('../controllers/producto');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -22,6 +22,7 @@ router.get( '/usuario/:id_usuario' ,listarProductoUsuario);
 
 router.put( '/:id' ,validarCampos,updateProducto);
 
+router.get( '/busqueda/:q' ,listarSugerenciasProductos);
 
 router.delete( '/:id' ,validarJWT,deleteProducto);
 

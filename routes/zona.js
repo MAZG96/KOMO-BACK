@@ -1,6 +1,6 @@
 const{ Router } = require('express');
 const{ check } = require('express-validator');
-const{   listarZona, insertarZona, getZona, listarZonasProvincia, deleteZona, updateZona } = require('../controllers/zona');
+const{   listarZona, insertarZona, getZona, listarZonasProvincia, deleteZona, updateZona,getZonaCP } = require('../controllers/zona');
 const { validarJWTAdmin } = require('../middlewares/validar-jwt-admin');
 
 
@@ -14,6 +14,9 @@ router.get( '/'  ,listarZona); //falta VALIDAR TOKEN
 router.post( '/' ,validarJWTAdmin,insertarZona);
 
 router.get( '/:id' ,getZona);
+
+router.get( '/cp/:cp' ,getZonaCP);
+
 
 router.get( '/provincia/:provincia' ,listarZonasProvincia);
 

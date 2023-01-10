@@ -1,6 +1,6 @@
 const { response } = require("express");
 const infoUsuarioModel = require("../models/Info-usuario");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 
 
@@ -80,6 +80,28 @@ const listarInfoUsuario = (req, res) => {
   })
     .then(productos => 
       res.json(productos[0]))
+    .catch(err => res.json({ error: err }))
+    
+}
+
+
+const listarSugerenciasProductores = (req, res) => {
+  infoUsuarioModel.findAll({
+    where: {
+      nombre_empresa: {
+        //[Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
+        [Op.like]: '%'+req.params.q+'%'
+
+      }
+
+   },
+   order: [
+    Sequelize.literal('rand()')
+  ],
+   limit: 12,
+  })
+    .then(infousuarios => 
+      res.json(infousuarios))
     .catch(err => res.json({ error: err }))
     
 }
@@ -180,5 +202,6 @@ module.exports = {
   listarInfoUsuarios,
   listarInfoUsuario,
   insertarInfoUsuario,
-  updateInfoUsuario
+  updateInfoUsuario,
+  listarSugerenciasProductores
 };

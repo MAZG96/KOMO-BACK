@@ -13,10 +13,10 @@ const zonaModel = db.define('zona', {
     provincia: {
       type: Sequelize.STRING
     },
-    direccion: {
+    cp_inicio: {
       type: Sequelize.STRING
     },
-    horario: {
+    cp_fin: {
       type: Sequelize.STRING
     }
   });
