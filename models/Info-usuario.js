@@ -64,6 +64,12 @@ const InfousuarioModel = db.define('info_usuarios', {
     nombre_envio: {
       type: Sequelize.STRING
     },
+    envio_frio: {
+      type: Sequelize.INTEGER
+    },
+    dias_publicados: {
+      type: Sequelize.STRING
+    },
   });
 
   

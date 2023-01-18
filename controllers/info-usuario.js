@@ -26,7 +26,7 @@ const { Op, Sequelize } = require("sequelize");
 
 const insertarInfoUsuario = (req, res) => {
   const { nombre, nombre_empresa, ubicacion, coord_x, coord_y,foto,id_usuario,recogida, pago_recogida, zona, calle, 
-    piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio} = req.body;
+    piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio, envio_frio, dias_publicados} = req.body;
 
   infoUsuarioModel.create({
     nombre,
@@ -46,7 +46,9 @@ const insertarInfoUsuario = (req, res) => {
     cp_envio,
     telefono_envio,
     direccion_envio,
-    localidad_envio
+    localidad_envio,
+    envio_frio, 
+    dias_publicados
   })
     .then(producto => res.send(producto));
 }
@@ -147,7 +149,7 @@ const updateProducto = async(req,res = response) => {
 
 const updateInfoUsuario = (req, res) => {
     const { nombre, nombre_empresa, ubicacion, coord_x, coord_y,foto,id_usuario,recogida,pago_recogida, zona, calle, 
-      piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio} = req.body;
+      piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio, envio_frio, dias_publicados} = req.body;
 
     infoUsuarioModel.update({
       nombre,
@@ -167,7 +169,9 @@ const updateInfoUsuario = (req, res) => {
       cp_envio,
       telefono_envio,
       direccion_envio,
-      localidad_envio
+      localidad_envio,
+      envio_frio,
+      dias_publicados
   },
   {
 
