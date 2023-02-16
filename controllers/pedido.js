@@ -118,7 +118,7 @@ const notificar_pedido = (req, res) => {
 
   itemPedidoModel.findAll({
     where: {
-      id_pedido: 17,
+      id_pedido: pedido.id,
     },
     raw: true,
   })
