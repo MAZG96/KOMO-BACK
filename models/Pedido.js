@@ -37,6 +37,10 @@ const pedidoModel = db.define('pedidos', {
     total:{
       type: Sequelize.FLOAT
     },
+    estado: {
+      type: Sequelize.STRING,
+      defaultValue: 'No pagado'
+    },
     id_usuario: {
       type: Sequelize.INTEGER
     }

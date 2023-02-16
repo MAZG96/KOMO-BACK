@@ -12,6 +12,11 @@ const fetch = require('node-fetch');
 
 const listarAccessPoint = (req, res) => {
 
+    const { codigo_postal } = req.body;
+
+    console.log(codigo_postal)
+
+
     let body = `<?xml version="1.0"?>
     <AccessRequest xml:lang="es-ES">
     <AccessLicenseNumber>EDC8C33AAB952E52</AccessLicenseNumber>
@@ -29,8 +34,7 @@ const listarAccessPoint = (req, res) => {
     </Request>
     <OriginAddress>
     <AddressKeyFormat>
-    <PoliticalDivision2>CONIL DE LA FRONTERA</PoliticalDivision2>
-    <PostcodePrimaryLow>11140</PostcodePrimaryLow>
+    <PostcodePrimaryLow>`+codigo_postal+`</PostcodePrimaryLow>
     <CountryCode>ES</CountryCode>
     </AddressKeyFormat>
     </OriginAddress>
@@ -67,6 +71,31 @@ const listarAccessPoint = (req, res) => {
     
   }
 
+  const CalcularEnvio = (req, res) => {
+
+
+
+    console.log(JSON.stringify(req.body.precioUPS))
+    fetch('https://onlinetools.ups.com/ship/v1/rating/Rate', {
+        method: 'POST',
+        body: JSON.stringify(req.body.precioUPS),
+        headers: {
+          'AccessLicenseNumber': 'EDC8C33AAB952E52',
+          'Password': 'jX$eatZ46pEx95!',
+          'Content-Type':'application/json',
+          'transid':'Transaction123',
+          'transactionSrc':'ES',
+          'Username':'KOMO_UPS',
+          'Accept':'application/json'
+
+        }
+    })
+    .then(res => res.text())
+    .then(data => res.send(data));
+    
+  }
+
 module.exports = {
- listarAccessPoint
+ listarAccessPoint,
+ CalcularEnvio
 };

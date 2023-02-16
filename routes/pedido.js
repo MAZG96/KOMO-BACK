@@ -1,6 +1,6 @@
 const{ Router } = require('express');
 const{ check } = require('express-validator');
-const{ listarPedido, insertarPedido, getPedido, listarPedidoUsuario, updatePedido,listarDatosGrafica} = require('../controllers/pedido');
+const{ listarPedido, insertarPedido, getPedido, listarPedidoUsuario, updatePedido,listarDatosGrafica,notificar_pedido} = require('../controllers/pedido');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -26,6 +26,8 @@ router.post( '/' ,[
     
 ] ,insertarPedido);
 
+router.post( '/send'  ,notificar_pedido);
+
 router.get( '/:id' ,getPedido);
 
 router.get( '/grafica/:datos' ,validarJWT,listarDatosGrafica);
@@ -36,7 +38,7 @@ router.get( '/grafica/:datos' ,validarJWT,listarDatosGrafica);
 
 router.get( '/usuario/:id_usuario', validarJWT,listarPedidoUsuario);
 
-router.put( '/:id' ,validarJWT,updatePedido);
+router.put( '/:id' ,updatePedido);
 
 
 module.exports = router;

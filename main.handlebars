@@ -17,8 +17,8 @@
 .grid-container {
   display: grid;
   grid-template-columns: 50% 50%;
-
 }
+
 
 .contenedor{
      text-align: center;
@@ -83,7 +83,7 @@ float: left;
      >
 
      <h3 style="text-align: center;">Detalles del pago: </h3>
-     <p>Estado: Realizado</p>
+     <p>Estado: {{estado}}</p>
      <p>Fecha: {{createdAt}}</p>
      
      
@@ -103,7 +103,6 @@ float: left;
      style="padding: 10px; border: 1px solid black"
      >
      <div class="texto-producto">
-    
      <h2>{{this.nombre}}</h2>
      <h3>{{this.precio}}€ x {{this.cantidad}}uds</h3>
      {{#if this.pago_recogida}}
@@ -120,8 +119,10 @@ float: left;
      </div> 
 {{/each}}
 
+     {{#if id_usuario}}
  <h6>* Acceda a la aplicación <a href="https://komolocalfoods.com/productos/cuenta">KOMO LOCAL FOODS</a> 
      y busque los detalles del pedido en Cuenta -> Comprados en el pedido con id #{{id}}</h6>
+     {{/if}}
      
   </div>
 

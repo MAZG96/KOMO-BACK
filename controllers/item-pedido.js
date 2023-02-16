@@ -3,7 +3,6 @@ const itemPedidoModel = require("../models/Item-pedido");
 const pedidoModel = require("../models/Pedido");
 const infousuarioModel = require("../models/Info-usuario");
 const usuarioModel = require("../models/Usuario");
-var hbs = require('nodemailer-express-handlebars');
 const InfousuarioModel = require("../models/Info-usuario");
 const Ftp = require( 'ftp' );
 
@@ -30,14 +29,8 @@ const Ftp = require( 'ftp' );
 // Insert into table
 
 const insertarItemPedido = (req, res) => {
-  const { id,foto,id_producto } = req.body;
 
   const cart = req.body;
-
-  console.log(cart)
-
-
-
   
   for (var _i = 0; _i < cart.length; _i++){
     
@@ -54,81 +47,7 @@ const insertarItemPedido = (req, res) => {
     })
   }
 
-      pedidoModel.findOne({
-        where: {
-          id: cart[0].id_pedido,
-        }
-      })
-        .then(pedido => {
-
-      var nodemailer = require('nodemailer');
-
-      //Creamos el objeto de transporte
-      var transporter = nodemailer.createTransport({
-        host: "smtp.mail.us-east-1.awsapps.com",
-        port: 465,
-        secure: true, // upgrade later with STARTTLS
-        auth: {
-          user: "hola@komolocalfoods.com",
-          pass: "komoLOCAL12",
-        },
-      });
-
-      
-
-      transporter.use('compile', hbs({
-        viewPath: 'views/email',
-        extName: '.hbs',
-        defaultLayout: null
-      }));
-
-      var productos = "";
-      var producto;
-      for (producto in cart) {
-        productos += "<div  style='padding: 10px; border: 1px solid black'>"
-        + "<p>" + cart[producto].nombre + "<p>"       
-        + "</div>";
-      }
-
-
-      var mailOptions = {
-        from: 'hola@komolocalfoods.com',
-        to: pedido.email,
-        subject: 'Pedido KOMO',
-        template: 'recover',
-        context: {
-          nombre: pedido.nombre,
-          apellidos: pedido.apellidos,
-          calle: pedido.calle,
-          piso: pedido.piso,
-          localidad: pedido.localidad,
-          provincia: pedido.provincia,
-          telefono: pedido.telefono,
-          email: pedido.email,
-          codigo_postal: pedido.codigo_postal,
-          total: pedido.total,
-          createdAt: pedido.createdAt,
-          id: pedido.id,
-          productos: cart
-        }
-      };
-
-      console.log(cart);
-
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email enviado: ' + info.response);
-        }
-      });
-
-        })
-
-      
- 
-
-  return res.status(201).json({
+  return res.status(200).json({
     ok: true
   });
 }
@@ -161,17 +80,20 @@ const listarPedido = (req, res) => {
     
 }
 
-const listarItemPedido = (req, res) => {
+
+const listaritemPedidoporid = (req, res) => {
   itemPedidoModel.findAll({
     where: {
       id_pedido: req.params.id_pedido,
     }
   })
-    .then(pedidos => 
-      res.json(pedidos))
+    .then(itempedidos => 
+      res.json(itempedidos))
     .catch(err => res.json({ error: err }))
     
 }
+
+
 
 const listarItemPedidoUsuario = (req, res) => {
   itemPedidoModel.findAll({
@@ -384,7 +306,7 @@ module.exports = {
   listarPedido,
   insertarItemPedido,
   getPedido,
-  listarItemPedido,
+  listaritemPedidoporid,
   listarItemPedidoUsuario,
   updatePedido,
   pruebaSEUR
