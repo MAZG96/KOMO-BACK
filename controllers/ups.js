@@ -54,7 +54,7 @@ const listarAccessPoint = (req, res) => {
     </OptionCode>
     </SearchOption>
     <MaximumListSize>2</MaximumListSize>
-    <SearchRadius>50</SearchRadius>
+    <SearchRadius>100</SearchRadius>
     </LocationSearchCriteria>
     </LocatorRequest>`
     
@@ -95,7 +95,83 @@ const listarAccessPoint = (req, res) => {
     
   }
 
+
+  const CrearEnvio = (req, res) => {
+
+    console.log(JSON.stringify(req.body.pedidoUPS))
+    fetch('https://onlinetools.ups.com/ship/v1/shipments', {
+        method: 'POST',
+        body: JSON.stringify(req.body.pedidoUPS),
+        headers: {
+          'AccessLicenseNumber': 'EDC8C33AAB952E52',
+          'Password': 'jX$eatZ46pEx95!',
+          'Content-Type':'application/json',
+          'transid':'Transaction123',
+          'transactionSrc':'ES',
+          'Username':'KOMO_UPS',
+          'Accept':'application/json'
+        }
+    })
+    .then(res => res.text())
+    .then(data => res.send(data));
+    
+  }
+
+  const GenerarEtiqueta = (req, res) => {
+
+    const { codigo_ups } = req.body;
+
+    console.log(req.body)
+
+    var peticion = {
+      "LabelRecoveryRequest": { 
+      "LabelSpecification": {
+      "HTTPUserAgent": "",
+      "LabelImageFormat": {
+      "Code": "ZPL"
+      },
+      "LabelStockSize": {
+      "Height": "6",
+      "Width": "4"
+      } 
+      },
+      "Translate": {
+      "LanguageCode": "spa",
+      "DialectCode": "97",
+      "Code": "01"
+      },
+      "LabelDelivery": {
+      "LabelLinkIndicator": "",
+      "ResendEMailIndicator": "TRUE",
+      "EMailMessage": {
+      "EMailAddress": ""
+      } 
+      },
+      "TrackingNumber": codigo_ups
+      } 
+     }
+
+    fetch(' https://onlinetools.ups.com/ship/v1/shipments/labels', {
+        method: 'POST',
+        body: JSON.stringify(peticion),
+        headers: {
+          'AccessLicenseNumber': 'EDC8C33AAB952E52',
+          'Password': 'jX$eatZ46pEx95!',
+          'Content-Type':'application/json',
+          'transid':'Transaction123',
+          'transactionSrc':'ES',
+          'Username':'KOMO_UPS',
+          'Accept':'application/json'
+        }
+    })
+    .then(res => res.text())
+    .then(data => res.send(data));
+    
+  }
+
 module.exports = {
  listarAccessPoint,
- CalcularEnvio
+ CalcularEnvio,
+ CrearEnvio,
+ GenerarEtiqueta
 };

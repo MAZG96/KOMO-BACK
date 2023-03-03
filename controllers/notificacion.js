@@ -23,13 +23,16 @@ const insertarNotificacion = (req, res) => {
 }
 
 const updateNotificacion = (req, res) => {
-  const { endpoint, expirationtime, p256dh, auth, id_usuario } = req.body;
+  const { endpoint, expirationtime, keys, id_usuario } = req.body;
 
-  console.log("UPDATE")
+  console.log(req.body)
+
+  const {p256dh, auth} = keys;
   
-  notificacionModel.update({
+  notificacionModel.update(
+  {
     endpoint,
-    expirationtime,
+    expirationtime: null,
     p256dh,
     auth,
     id_usuario

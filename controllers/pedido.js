@@ -2,6 +2,13 @@ const { response } = require("express");
 const pedidoModel = require("../models/Pedido");
 const { sequelize } = require('sequelize');
 const itemPedidoModel = require("../models/Item-pedido");
+const usuarioModel = require("../models/Usuario");
+const notificacionModel = require("../models/Notificacion");
+const infousuarioModel = require("../models/Info-usuario")
+
+const  Webpush  = require('web-push');
+
+
 var hbs = require('nodemailer-express-handlebars');
 const { Op } = require("sequelize");
 
@@ -28,7 +35,7 @@ const { Op } = require("sequelize");
 // Insert into table
 
 const insertarPedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total,id_ups } = req.body;
 
   console.log(req.body)
 
@@ -43,6 +50,7 @@ const insertarPedido = (req, res) => {
     email,
     codigo_postal,
     total,
+    id_ups,
     id_usuario
   })
   .then(pedido=> 
@@ -153,6 +161,7 @@ const notificar_pedido = (req, res) => {
     + "</div>";
   }
 
+  
   var mailOptions = {
     from: 'hola@komolocalfoods.com',
     to: pedido.email,
@@ -192,22 +201,112 @@ const notificar_pedido = (req, res) => {
     
 }
 
+const notificar_venta = (req, res) => {
+
+  const itempedido = req.body;
 
 
-/*
-const getProducto = async(req,res = response) => {
-  const {id} = req.params;  
+  usuarioModel.findOne({
+    where: {
+      id: itempedido.id_productor,
+    },
+    raw: true,
+  })
+    .then(usuario => {
 
-  req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM productos WHERE id = ?',id, (err, producto) => {
-    if (err) {
-      res.json(err);
-    }
-      res.json(producto[0])  
-    });
+  var nodemailer = require('nodemailer');
 
+  //Creamos el objeto de transporte
+  var transporter = nodemailer.createTransport({
+    host: "smtp.mail.us-east-1.awsapps.com",
+    port: 465,
+    secure: true, // upgrade later with STARTTLS
+    auth: {
+      user: "hola@komolocalfoods.com",
+      pass: "komoLOCAL12",
+    },
   });
-};*/
+
+  
+
+  transporter.use('compile', hbs({
+    viewPath: 'views/email',
+    extName: '.hbs',
+    defaultLayout: null
+  }));
+
+  
+
+  var mailOptions = {
+    from: 'hola@komolocalfoods.com',
+    to: usuario.email,
+    subject: 'venta KOMOLOCALFOODS',
+    template: 'recover',
+    context: {
+      nombre_usuario: usuario.name,
+      producto_vendido: itempedido
+    }
+  };
+
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email enviado: ' + info.response);
+    }
+  });
+
+  
+
+  notificacionModel.findOne({
+    where: {
+      id_usuario: itempedido.id_productor
+    }
+  })
+    .then(notificacion => {
+
+      console.log(notificacion)
+      const payload = {
+        "notification": {
+          "title": "Venta realizada",
+          "body": "Acabas de vender "+itempedido.nombre,
+          "vibrate": [100,50,100],
+          "image": "https://komolocalfoods.com/assets/productos/komo-logo.png",
+          "actions": [{
+            "action": "explore",
+            "title": "Ir a KOMOLOCALFOODS"
+          }]
+        }
+      }
+
+      const token = {
+        "endpoint": notificacion.endpoint,
+        "expirationTime": null,
+        "keys": 
+        {
+          "auth": notificacion.auth,
+          "p256dh": notificacion.p256dh
+        }
+      }
+
+      Webpush.sendNotification(
+        token,
+        JSON.stringify(payload))
+        .then(res => {
+          console.log(enviado);
+        }).catch ( err => {
+          console.log("USUARIO SIN PERMISOS, KEYS MAL");
+        })
+  
+    })
+
+
+
+  return res.status(200).json(itempedido)
+    })
+    
+}
 
 const getPedido = (req, res) => {
   pedidoModel.findAll({
@@ -257,7 +356,7 @@ const updateProducto = async(req,res = response) => {
 };*/
 
 const updatePedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,id_ups,total } = req.body;
 
   pedidoModel.update({
     nombre,
@@ -271,6 +370,7 @@ const updatePedido = (req, res) => {
     codigo_postal,
     total,
     estado,
+    id_ups,
     id_usuario
   },
   {
@@ -305,6 +405,7 @@ module.exports = {
   insertarPedido,
   getPedido,
   notificar_pedido,
+  notificar_venta,
   listarPedidoUsuario,
   listarDatosGrafica,
   updatePedido

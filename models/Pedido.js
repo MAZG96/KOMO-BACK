@@ -41,6 +41,10 @@ const pedidoModel = db.define('pedidos', {
       type: Sequelize.STRING,
       defaultValue: 'No pagado'
     },
+    id_ups: {
+      type: Sequelize.STRING,
+      defaultValue: ''
+    },
     id_usuario: {
       type: Sequelize.INTEGER
     }

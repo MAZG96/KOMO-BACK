@@ -58,6 +58,42 @@ float: left;
 
 <h1 style="text-align: center"><img class="logo" src="https://komolocalfoods.com/assets/productos/komo-logo.png"></h1>
 
+{{#if nombre_usuario}}
+<h1 style="text-align: center;padding-bottom: 20px;">Venta Realizada: </h1>
+<div class="contenedor">
+     <h1 style="text-align: center;padding-bottom: 20px;">Hola {{nombre_usuario}}</h1>
+     <h3 style="text-align: center;">Acabas de vender lo siguiente: </h3>
+</div>
+
+<div class="grid-container-100">
+
+      {{#if producto_vendido}}
+        <div class="grid-item"
+     style="padding: 10px; border: 1px solid black"
+     >
+     <div class="texto-producto">
+     <h2>{{producto_vendido.nombre}}</h2>
+     <h3>{{producto_vendido.precio}}€ x {{producto_vendido.cantidad}}uds</h3>
+     {{#if producto_vendido.pago_recogida}}
+     Pago en recogida
+     {{/if}}
+    
+
+     </div>
+     
+     <img class="img-producto" src={{producto_vendido.foto}} >
+     
+
+
+     </div> 
+     {{/if}}
+
+
+ <h6>* Acceda a la aplicación <a href="https://komolocalfoods.com/productos/cuenta">KOMO LOCAL FOODS</a> 
+     y busque los detalles de la venta en Cuenta -> Vendidos y realice los pasos que se le indiquen.</h6>
+
+{{/if}}
+
 {{#if id}}
 
 <h1 style="text-align: center;padding-bottom: 20px;">Resumen Pedido: #{{id}}</h1>

@@ -345,7 +345,8 @@ app.use('/api/ups/', require('./routes/ups'));
 
 app.listen( process.env.PORT, async () => {
     console.log(`Servidor corriendo en puerto ${ process.env.PORT }`);
+    
     await stripe.applePayDomains.create({
-      domain_name: 'thunderous-pithivier-77dcc0.netlify.app',
+      domain_name: 'komolocalfoods.com',
     });
 });
