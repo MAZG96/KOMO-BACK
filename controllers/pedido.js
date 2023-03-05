@@ -276,7 +276,20 @@ const notificar_venta = (req, res) => {
           "actions": [{
             "action": "explore",
             "title": "Ir a KOMOLOCALFOODS"
-          }]
+          }],
+          data: {
+            onActionClick: {
+                default: { operation: 'openWindow' },
+                bar: {
+                    operation: 'focusLastFocusedOrOpen',
+                    url: 'https://komolocalfoods.com/productos/cuenta',
+                },
+                baz: {
+                    operation: 'navigateLastFocusedOrOpen',
+                    url: 'https://komolocalfoods.com/productos/cuenta',
+                },
+            },
+        }
         }
       }
 

@@ -99,7 +99,10 @@ const listarItemPedidoUsuario = (req, res) => {
   itemPedidoModel.findAll({
     where: {
       id_productor: req.params.id_productor,
-    }
+    },
+    order: [
+      ['id', 'DESC'],
+    ]
   })
     .then(pedidos => 
       res.json(pedidos))
