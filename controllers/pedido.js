@@ -35,7 +35,7 @@ const { Op } = require("sequelize");
 // Insert into table
 
 const insertarPedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total,id_ups } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total } = req.body;
 
   console.log(req.body)
 
@@ -50,7 +50,6 @@ const insertarPedido = (req, res) => {
     email,
     codigo_postal,
     total,
-    id_ups,
     id_usuario
   })
   .then(pedido=> 
@@ -369,7 +368,7 @@ const updateProducto = async(req,res = response) => {
 };*/
 
 const updatePedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,id_ups,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,total } = req.body;
 
   pedidoModel.update({
     nombre,
@@ -383,7 +382,6 @@ const updatePedido = (req, res) => {
     codigo_postal,
     total,
     estado,
-    id_ups,
     id_usuario
   },
   {

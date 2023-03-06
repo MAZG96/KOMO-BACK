@@ -31,6 +31,10 @@ const itemPedidoModel = db.define('item-pedidos', {
     pago_recogida: {
       type: Sequelize.INTEGER
     },
+    id_ups: {
+      type: Sequelize.STRING,
+      defaultValue: ''
+    },
     recogida: {
       type: Sequelize.STRING,
     },

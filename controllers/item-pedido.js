@@ -175,7 +175,7 @@ const updateProducto = async(req,res = response) => {
 };*/
 
 const updatePedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total,id_ups } = req.body;
 
   pedidoModel.update({
     nombre,
@@ -188,10 +188,34 @@ const updatePedido = (req, res) => {
     email,
     codigo_postal,
     total,
-    id_usuario
+    id_usuario,
+    id_ups
   },
   {
   where: {id: req.params.id}
+    
+  })
+    .then(producto => res.send(producto));
+}
+
+
+const updateItemPedido = (req, res) => {
+  const { id,cantidad, foto, precio , nombre, id_producto, id_productor, id_pedido, pago_recogida, id_ups, recogida  } = req.body;
+
+  itemPedidoModel.update({
+    nombre,
+    cantidad,
+    precio,
+    foto,
+    id_producto,
+    id_pedido,
+    id_productor,
+    pago_recogida,
+    recogida,
+    id_ups
+  },
+  {
+  where: {id: id}
     
   })
     .then(producto => res.send(producto));
@@ -308,6 +332,7 @@ const deleteProducto = async(req,res = response) => {
 module.exports = {
   listarPedido,
   insertarItemPedido,
+  updateItemPedido,
   getPedido,
   listaritemPedidoporid,
   listarItemPedidoUsuario,

@@ -17,7 +17,7 @@ const app = express();
 
 
 const stripe = require('stripe')
-('sk_test_51LskiFJXPK7Bx9nFbzjJ8LQGGJj3eFaX6IVAM2HKJ2wbFfPBNvi3h7vEkzu8beW3EUKZydkUv3GVOiD4DCcfxfaQ00hhRhvfGo');
+('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');
 
 
 
