@@ -288,7 +288,29 @@ app.use(express.static('public'));
 app.use( express.json() );
 
 
+app.post('/api/create-payment-intent', async (req,res) => {
+const params = {
+  payment_method_types: 'card',
+  amount: req.body.amount,
+  currency: 'eur',
+}
 
+try {
+  const paymentIntent = await stripe.paymentIntents.create(params);
+
+  // Send publishable key and PaymentIntent details to client
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+    nextAction: paymentIntent.next_action,
+  });
+} catch (e) {
+  return res.status(400).send({
+    error: {
+      message: e.message,
+    },
+  });
+}
+});
 
 
 app.post('/api/stripe_checkout', async (req,res) => {

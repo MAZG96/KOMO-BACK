@@ -78,6 +78,9 @@ const insertarPedido = (req, res) => {
 
 const listarPedido = (req, res) => {
   pedidoModel.findAll({
+    where: {
+      estado: 'Pagado',
+    },
     order: [
       ['id', 'DESC'],
     ]
@@ -92,6 +95,7 @@ const listarPedidoUsuario = (req, res) => {
   pedidoModel.findAll({
     where: {
       id_usuario: req.params.id_usuario,
+      estado: 'Pagado'
     },
     order: [
       ['id', 'DESC'],
@@ -109,7 +113,7 @@ const listarDatosGrafica = async (req, res) => {
 
   let ventas;
   
-  ventas = await pedidoModel.sequelize.query('SELECT COUNT(*) ventas, MONTH(createdAt) Mes FROM `pedidos` GROUP BY MONTH(createdAt)', {
+  ventas = await pedidoModel.sequelize.query('SELECT COUNT(*) ventas, MONTH(createdAt) Mes FROM `pedidos` WHERE estado="Pagado" GROUP BY MONTH(createdAt)', {
     type: pedidoModel.sequelize.QueryTypes.SELECT
   });
 

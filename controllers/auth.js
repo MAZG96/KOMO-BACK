@@ -501,6 +501,7 @@ const loginUsuario = async(req,res = response) => {
             })
         }
 
+        
         //generar jwt
         
         const token = await generarJWT(dbusuario.uid,dbusuario.name, dbusuario.email, dbusuario.rol);

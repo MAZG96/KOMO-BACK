@@ -200,7 +200,7 @@ const updatePedido = (req, res) => {
 
 
 const updateItemPedido = (req, res) => {
-  const { id,cantidad, foto, precio , nombre, id_producto, id_productor, id_pedido, pago_recogida, id_ups, recogida  } = req.body;
+  const { id,cantidad, foto, precio , nombre, id_producto, id_pedido, pago_recogida, id_ups, recogida  } = req.body;
 
   itemPedidoModel.update({
     nombre,
@@ -209,7 +209,6 @@ const updateItemPedido = (req, res) => {
     foto,
     id_producto,
     id_pedido,
-    id_productor,
     pago_recogida,
     recogida,
     id_ups
