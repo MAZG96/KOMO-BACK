@@ -573,6 +573,12 @@ const revalidarTokenAdmin = async(req, res = response ) => {
     // Generar el JWT
     const token = await generarJWT( dbUser.uid, dbUser.name, dbUser.email, dbUser.rol );
 
+    if(dbUser.rol != "ROL_ADMIN"){
+        return res.json({
+            ok: false
+        }); 
+    }else{
+
     return res.json({
         ok: true,
         id: dbUser.id,
@@ -582,6 +588,8 @@ const revalidarTokenAdmin = async(req, res = response ) => {
         rol: dbUser.rol,
         token
     });
+
+}
 
 }
 

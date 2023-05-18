@@ -295,8 +295,12 @@ const params = {
   currency: 'eur',
 }
 
+console.log("hola")
 try {
-  const paymentIntent = await stripe.paymentIntents.create(params);
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 100,
+    currency: 'eur',
+  });
 
   // Send publishable key and PaymentIntent details to client
   res.send({
