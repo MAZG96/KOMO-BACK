@@ -67,6 +67,9 @@ const InfousuarioModel = db.define('info_usuarios', {
     envio_frio: {
       type: Sequelize.INTEGER
     },
+    envio_individual: {
+      type: Sequelize.INTEGER
+    },
     dias_publicados: {
       type: Sequelize.STRING
     },
