@@ -10,6 +10,12 @@ const zonaModel = db.define('zona', {
     nombre: {
       type: Sequelize.STRING
     },
+    horario: {
+      type: Sequelize.STRING
+    },
+    direccion: {
+      type: Sequelize.STRING
+    },
     provincia: {
       type: Sequelize.STRING
     },
