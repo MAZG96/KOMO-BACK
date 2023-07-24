@@ -71,11 +71,76 @@ const listarAccessPoint = (req, res) => {
     
   }
 
-  const CalcularEnvio = (req, res) => {
+  const CalcularEnvioMBE = (req, res) => {
+
+    const { codigo_postal } = req.body;
+
+    console.log("codigo_postal")
 
 
+    let body = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.onlinembe.eu/ws/">
+    <soapenv:Header/>
+    <soapenv:Body>
+       <ws:ShippingOptionsRequest>
+          <RequestContainer>
+             <System>ES</System>
+             <InternalReferenceID>TEST opciones de envio</InternalReferenceID>
+             <ShippingParameters>
+                 <DestinationInfo>
+                     <ZipCode>08901</ZipCode>
+                     <City>barcelona</City>
+                     <State></State>
+                     <Country>ES</Country>
+                </DestinationInfo>
+                <ShipType>EXPORT</ShipType>
+                <PackageType>GENERIC</PackageType>
+                <Items>
+                   <Item>
+                      <Weight>27</Weight>
+                      <Dimensions>
+                      </Dimensions>
+                   </Item>
+                   <Item>
+                      <Weight>3</Weight>
+                      <Dimensions>
+                      </Dimensions>
+                   </Item>
+                </Items>
+             </ShippingParameters>
+          </RequestContainer>
+       </ws:ShippingOptionsRequest>
+    </soapenv:Body>
+ </soapenv:Envelope>`
+    
+    fetch('https://api.mbeonline.es/ws', {
+        method: 'POST',
+        body: body,
+        headers: {
+          'Content-Type': 'application/xml',
+          'Host': '<calculated when request is sent>',
+          'Authorization': 'Basic azRGQmp0U0MzUEVUUWxiNnpuQjk6QktRajR2Q0lsV3doUHJ3N3ExOTJSWjQ5QlVlYnpRMGxWM1AxckI4ZQ==',
+          'Cookie': '813da5a810cdd3b3e9701f07aacd889a=4d8fc65a1f164a2457f15bde4c0e3b82',
+          'Accept': '*/*',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive'
+        }
+    })
+    .then(res => {
+      console.log(res)
+      res.text()})
+
+    .then(data => {
+      console.log(data)
+      res.send(data)});
+    
+  }
+
+    const CalcularEnvio = (req, res) => {
 
     console.log(JSON.stringify(req.body.precioUPS))
+
+
+    
     fetch('https://onlinetools.ups.com/ship/v1/rating/Rate', {
         method: 'POST',
         body: JSON.stringify(req.body.precioUPS),
@@ -172,6 +237,7 @@ const listarAccessPoint = (req, res) => {
 module.exports = {
  listarAccessPoint,
  CalcularEnvio,
+ CalcularEnvioMBE,
  CrearEnvio,
  GenerarEtiqueta
 };
