@@ -1,6 +1,7 @@
 const { response } = require("express");
 const productoModel = require("../models/Producto");
 const { Op, Sequelize } = require("sequelize");
+require("tls").DEFAULT_ECDH_CURVE = "auto"
 
 var DomParser = require('dom-parser');
 var parser = new DomParser();
@@ -73,71 +74,26 @@ const listarAccessPoint = (req, res) => {
 
   const CalcularEnvioMBE = (req, res) => {
 
-    const { codigo_postal } = req.body;
-
-    console.log("codigo_postal")
-
-
-    let body = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.onlinembe.eu/ws/">
-    <soapenv:Header/>
-    <soapenv:Body>
-       <ws:ShippingOptionsRequest>
-          <RequestContainer>
-             <System>ES</System>
-             <InternalReferenceID>TEST opciones de envio</InternalReferenceID>
-             <ShippingParameters>
-                 <DestinationInfo>
-                     <ZipCode>08901</ZipCode>
-                     <City>barcelona</City>
-                     <State></State>
-                     <Country>ES</Country>
-                </DestinationInfo>
-                <ShipType>EXPORT</ShipType>
-                <PackageType>GENERIC</PackageType>
-                <Items>
-                   <Item>
-                      <Weight>27</Weight>
-                      <Dimensions>
-                      </Dimensions>
-                   </Item>
-                   <Item>
-                      <Weight>3</Weight>
-                      <Dimensions>
-                      </Dimensions>
-                   </Item>
-                </Items>
-             </ShippingParameters>
-          </RequestContainer>
-       </ws:ShippingOptionsRequest>
-    </soapenv:Body>
- </soapenv:Envelope>`
+    const { cuerpo } = req.body;
+    
+    console.log(req.body)
     
     fetch('https://api.mbeonline.es/ws', {
         method: 'POST',
-        body: body,
+        body: cuerpo,
         headers: {
-          'Content-Type': 'application/xml',
-          'Host': '<calculated when request is sent>',
+          'Content-Type': 'text/xml',
           'Authorization': 'Basic azRGQmp0U0MzUEVUUWxiNnpuQjk6QktRajR2Q0lsV3doUHJ3N3ExOTJSWjQ5QlVlYnpRMGxWM1AxckI4ZQ==',
-          'Cookie': '813da5a810cdd3b3e9701f07aacd889a=4d8fc65a1f164a2457f15bde4c0e3b82',
-          'Accept': '*/*',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive'
+
         }
     })
-    .then(res => {
-      console.log(res)
-      res.text()})
-
-    .then(data => {
-      console.log(data)
-      res.send(data)});
+    .then(res => res.text())
+    .then(str => new parser.parseFromString(str, "text/xml"))
+    .then(data => res.send(data));
     
   }
 
     const CalcularEnvio = (req, res) => {
-
-    console.log(JSON.stringify(req.body.precioUPS))
 
 
     
