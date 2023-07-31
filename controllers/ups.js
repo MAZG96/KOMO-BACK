@@ -77,14 +77,18 @@ const listarAccessPoint = (req, res) => {
     const { cuerpo } = req.body;
     
     console.log(req.body)
+
+    var username = 'k4FBjtSC3PETQlb6znB9';
+    var password = 'BKQj4vCIlWwhPrw7q192RZ49BUebzQ0lV3P1rB8e';
+
+    var auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
     
     fetch('https://api.mbeonline.es/ws', {
         method: 'POST',
         body: cuerpo,
         headers: {
           'Content-Type': 'text/xml',
-          'Authorization': 'Basic azRGQmp0U0MzUEVUUWxiNnpuQjk6QktRajR2Q0lsV3doUHJ3N3ExOTJSWjQ5QlVlYnpRMGxWM1AxckI4ZQ==',
-
+          'Authorization': auth,
         }
     })
     .then(res => res.text())
