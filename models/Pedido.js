@@ -31,6 +31,9 @@ const pedidoModel = db.define('pedidos', {
     email: {
       type: Sequelize.STRING
     },
+    tipo_venta: {
+      type: Sequelize.INTEGER
+    },
     codigo_postal: {
       type: Sequelize.STRING
     },  

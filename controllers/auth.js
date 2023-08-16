@@ -12,6 +12,27 @@ const {OAuth2Client} = require('google-auth-library');
 const CLIENT_ID = "103028434187-41n7grnuhdlvssjvqc65cfs9uc399kb2.apps.googleusercontent.com"
 const client = new OAuth2Client(CLIENT_ID);
 
+
+const getUsuario = (req, res) => {
+    usuarioModel.findOne({
+      where: {
+        id: req.params.id,
+      }
+    })
+      .then(usuario => {
+
+        usuario.password = '';
+        usuario.uid = '';
+        usuario.rol = '';
+        res.json(usuario);
+      }
+
+        )
+      .catch(err => res.json({ error: err }))
+      
+  }
+  
+
 const activarUsuario = async (req, res) =>{
 
     const {token} = req.body;
@@ -277,6 +298,8 @@ const loginGoogle = async (req, res) => {
 
     let token = req.body.token
 
+    console.log(token);
+
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: token,
@@ -290,7 +313,7 @@ const loginGoogle = async (req, res) => {
         const email = payload['email'];
         const rol = "ROL_USER";
 
-        console.log(email);
+        
         const usuario = await usuarioModel.findOne({ where: { email: email} }); // comprobamos que no existe un usuario con el email
 
         if( usuario !== null ){
@@ -597,6 +620,7 @@ const revalidarTokenAdmin = async(req, res = response ) => {
 
 module.exports = {
     crearUsuario,
+    getUsuario,
     loginUsuario,
     loginUsuarioAdmin,
     revalidarToken,

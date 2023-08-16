@@ -35,7 +35,7 @@ const { Op } = require("sequelize");
 // Insert into table
 
 const insertarPedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal, telefono,id_usuario,email,total,tipo_venta } = req.body;
 
   console.log(req.body)
 
@@ -49,6 +49,7 @@ const insertarPedido = (req, res) => {
     telefono,
     email,
     codigo_postal,
+    tipo_venta,
     total,
     id_usuario
   })
@@ -135,6 +136,7 @@ const notificar_pedido = (req, res) => {
   })
     .then(cart => {
 
+
   var nodemailer = require('nodemailer');
 
   //Creamos el objeto de transporte
@@ -164,10 +166,19 @@ const notificar_pedido = (req, res) => {
     + "</div>";
   }
 
+  infousuarioModel.findOne({
+    where: {
+      id_usuario: cart[0].id_productor,
+    },
+    raw: true,
+  })
+  .then(usuario => {
+    console.log(usuario);
+  
   
   var mailOptions = {
     from: 'hola@komolocalfoods.com',
-    to: pedido.email,
+    to: [pedido.email,"miguelzara96@outlook.es"],
     subject: 'Pedido KOMO',
     template: 'recover',
     context: {
@@ -189,6 +200,8 @@ const notificar_pedido = (req, res) => {
     }
   };
 
+
+
   console.log(cart);
 
   transporter.sendMail(mailOptions, function(error, info){
@@ -201,6 +214,102 @@ const notificar_pedido = (req, res) => {
 
   return res.status(200).json(cart)
     })
+  })
+    
+}
+
+const notificar_pedido_admin = (req, res) => {
+
+  const pedido = req.body;
+
+
+  itemPedidoModel.findAll({
+    where: {
+      id_pedido: pedido.id,
+    },
+    raw: true,
+  })
+    .then(cart => {
+
+
+  var nodemailer = require('nodemailer');
+
+  //Creamos el objeto de transporte
+  var transporter = nodemailer.createTransport({
+    host: "smtp.mail.us-east-1.awsapps.com",
+    port: 465,
+    secure: true, // upgrade later with STARTTLS
+    auth: {
+      user: "hola@komolocalfoods.com",
+      pass: "komoLOCAL12",
+    },
+  });
+
+  
+
+  transporter.use('compile', hbs({
+    viewPath: 'views/email',
+    extName: '.hbs',
+    defaultLayout: null
+  }));
+
+  var productos = "";
+  var producto;
+  for (producto in cart) {
+    productos += "<div  style='padding: 10px; border: 1px solid black'>"
+    + "<p>" + cart[producto].nombre + "<p>"       
+    + "</div>";
+  }
+
+  infousuarioModel.findOne({
+    where: {
+      id_usuario: cart[0].id_productor,
+    },
+    raw: true,
+  })
+  .then(usuario => {
+    console.log(usuario);
+  
+  
+  var mailOptions = {
+    from: 'hola@komolocalfoods.com',
+    to: ["miguelzara96@outlook.es","hola@komolocalfoods.com"],
+    subject: 'Pedido KOMO',
+    template: 'recover',
+    context: {
+      nombre: pedido.nombre,
+      apellidos: pedido.apellidos,
+      calle: pedido.calle,
+      piso: pedido.piso,
+      localidad: pedido.localidad,
+      provincia: pedido.provincia,
+      telefono: pedido.telefono,
+      email: pedido.email,
+      codigo_postal: pedido.codigo_postal,
+      total: pedido.total,
+      estado: pedido.estado,
+      createdAt: pedido.createdAt,
+      id: pedido.id,
+      id_usuario: pedido.id_usuario,
+      productos: cart
+    }
+  };
+
+
+
+  console.log(cart);
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email enviado: ' + info.response);
+    }
+  });
+
+  return res.status(200).json(cart)
+    })
+  })
     
 }
 
@@ -372,7 +481,7 @@ const updateProducto = async(req,res = response) => {
 };*/
 
 const updatePedido = (req, res) => {
-  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,total } = req.body;
+  const { nombre, apellidos, calle, piso ,localidad, provincia,codigo_postal,estado, telefono,id_usuario,email,total,tipo_venta } = req.body;
 
   pedidoModel.update({
     nombre,
@@ -386,6 +495,7 @@ const updatePedido = (req, res) => {
     codigo_postal,
     total,
     estado,
+    tipo_venta,
     id_usuario
   },
   {

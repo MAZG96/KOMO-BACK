@@ -31,6 +31,8 @@ const Ftp = require( 'ftp' );
 const insertarItemPedido = (req, res) => {
 
   const cart = req.body;
+
+  console.log(cart)
   
   for (var _i = 0; _i < cart.length; _i++){
     
@@ -42,6 +44,7 @@ const insertarItemPedido = (req, res) => {
     id_producto: cart[_i].id_producto,
     id_pedido: cart[_i].id_pedido,
     id_productor: cart[_i].id_productor,
+    id_ups: cart[_i].id_ups,
     recogida: cart[_i].recogida,
     pago_recogida: cart[_i].pago_recogida,
     })
