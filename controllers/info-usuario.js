@@ -1,6 +1,9 @@
 const { response } = require("express");
 const infoUsuarioModel = require("../models/Info-usuario");
 const { Op, Sequelize } = require("sequelize");
+const path = require("path");
+var fs = require('fs');
+
 
 
 
@@ -26,7 +29,7 @@ const { Op, Sequelize } = require("sequelize");
 
 const insertarInfoUsuario = (req, res) => {
   const { nombre, nombre_empresa, ubicacion, coord_x, coord_y,foto,id_usuario,recogida, pago_recogida, zona, calle, 
-    piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio, envio_frio, dias_publicados, envio_individual} = req.body;
+    piso, horario, certificado, cp_envio, telefono_envio, pregunta1, pregunta2, envio_frio, dias_publicados, envio_individual} = req.body;
 
   infoUsuarioModel.create({
     nombre,
@@ -42,11 +45,11 @@ const insertarInfoUsuario = (req, res) => {
     pago_recogida,
     horario,
     id_usuario,
-    nombre_envio,
+    certificado,
     cp_envio,
     telefono_envio,
-    direccion_envio,
-    localidad_envio,
+    pregunta1,
+    pregunta2,
     envio_frio, 
     envio_individual,
     dias_publicados
@@ -54,6 +57,57 @@ const insertarInfoUsuario = (req, res) => {
     .then(producto => res.send(producto));
 }
 
+
+const subir_documento = async (req, res) => {
+
+
+  if (!req.files) {
+      return res.status(400).send("No files were uploaded.");
+    }
+  
+    console.log(req.files)
+    const file = req.files.archivo;
+    const path = "files/documentacion/"+req.body.nombre;
+
+    console.log("path: "+path);
+
+  
+    file.mv(path, async (err) => {
+      if (err) {
+        console.log("path: "+path);
+        console.log("err: "+err);
+
+        
+
+        return res.status(500).send(err);
+      }
+
+
+      fs.rename(path, path+".pdf", function (err) {
+        if (err) throw err;
+        res.write('File uploaded and moved!');
+        res.end();
+      });
+
+      return res.send({ status: "success", path: path });
+
+    });
+    
+  }
+
+  const updateDocURL = (req, res) => {
+    const {certificado} = req.body;
+  
+      infoUsuarioModel.update({
+      certificado,
+      },
+      {
+    
+      where: {id: req.params.id}
+        
+      })
+      .then(producto => res.send(producto));
+  }
 
 
 /*const listarProducto = async(req,res = response) => req.getConnection((err, conn) => {
@@ -149,31 +203,31 @@ const updateProducto = async(req,res = response) => {
 };*/
 
 const updateInfoUsuario = (req, res) => {
-    const { nombre, nombre_empresa, ubicacion, coord_x, coord_y,foto,id_usuario,recogida,pago_recogida, zona, calle, 
-      piso, horario, nombre_envio, cp_envio, telefono_envio, direccion_envio, localidad_envio, envio_frio, dias_publicados, envio_individual} = req.body;
+  const { nombre, nombre_empresa, ubicacion, coord_x, coord_y,foto,id_usuario,recogida, pago_recogida, zona, calle, 
+    piso, horario, certificado, cp_envio, telefono_envio, pregunta1, pregunta2, envio_frio, dias_publicados, envio_individual} = req.body;
 
     infoUsuarioModel.update({
       nombre,
-      nombre_empresa,
-      ubicacion,
-      coord_x,
-      coord_y,
-      foto,
-      zona,
-      calle, 
-      piso, 
-      recogida,
-      pago_recogida,
-      horario,
-      id_usuario,
-      nombre_envio,
-      cp_envio,
-      telefono_envio,
-      direccion_envio,
-      localidad_envio,
-      envio_frio,
-      envio_individual,
-      dias_publicados
+    nombre_empresa,
+    ubicacion,
+    coord_x,
+    coord_y,
+    foto,
+    zona,
+    calle, 
+    piso,
+    recogida,
+    pago_recogida,
+    horario,
+    id_usuario,
+    certificado,
+    cp_envio,
+    telefono_envio,
+    pregunta1,
+    pregunta2,
+    envio_frio, 
+    envio_individual,
+    dias_publicados
   },
   {
 
@@ -207,7 +261,9 @@ const deleteProducto = async(req,res = response) => {
 module.exports = {
   listarInfoUsuarios,
   listarInfoUsuario,
+  subir_documento,
   insertarInfoUsuario,
   updateInfoUsuario,
+  updateDocURL,
   listarSugerenciasProductores
 };

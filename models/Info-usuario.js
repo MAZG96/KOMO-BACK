@@ -49,10 +49,10 @@ const InfousuarioModel = db.define('info_usuarios', {
     zona: {
       type: Sequelize.INTEGER
     },
-    direccion_envio: {
+    pregunta1: {
       type: Sequelize.STRING
     },
-    localidad_envio: {
+    pregunta2: {
       type: Sequelize.STRING
     },
     cp_envio: {
@@ -61,7 +61,7 @@ const InfousuarioModel = db.define('info_usuarios', {
     telefono_envio: {
       type: Sequelize.STRING
     },
-    nombre_envio: {
+    certificado: {
       type: Sequelize.STRING
     },
     envio_frio: {
