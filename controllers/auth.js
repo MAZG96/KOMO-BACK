@@ -12,6 +12,25 @@ const {OAuth2Client} = require('google-auth-library');
 const CLIENT_ID = "103028434187-41n7grnuhdlvssjvqc65cfs9uc399kb2.apps.googleusercontent.com"
 const client = new OAuth2Client(CLIENT_ID);
 
+const getUsuarioInactivos = (req, res) => {
+
+    usuarioModel.findAll({
+        where: {
+          rol: 'INACTIVO',
+        }
+      })
+        .then(usuario => {
+  
+          usuario.password = '';
+          usuario.uid = '';
+          usuario.rol = '';
+          res.json(usuario);
+        }
+  
+          )
+        .catch(err => res.json({ error: err }))
+
+}
 
 const getUsuario = (req, res) => {
     usuarioModel.findOne({
@@ -82,6 +101,21 @@ const activarUsuario = async (req, res) =>{
     }
 
     
+}
+
+const activarCuenta = async (req, res) =>{
+    
+        
+        usuarioModel.update(
+            {
+              rol: "ROL_USER"
+            },
+            {
+            where: {id: req.params.id}
+              
+            })
+            .then(usuario => res.send(usuario));
+
 }
 
 const recuperacionUsuario = async (req, res) =>{
@@ -621,12 +655,14 @@ const revalidarTokenAdmin = async(req, res = response ) => {
 module.exports = {
     crearUsuario,
     getUsuario,
+    getUsuarioInactivos,
     loginUsuario,
     loginUsuarioAdmin,
     revalidarToken,
     revalidarTokenAdmin,
     loginGoogle,
     activarUsuario,
+    activarCuenta,
     recuperacionUsuario,
     restablecerPassword
     

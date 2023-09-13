@@ -1,8 +1,10 @@
 const{ Router } = require('express');
 const{ check } = require('express-validator');
-const{ crearUsuario,loginUsuario,revalidarToken, loginUsuarioAdmin, revalidarTokenAdmin, loginGoogle, activarUsuario, recuperacionUsuario, restablecerPassword, getUsuario} = require('../controllers/auth');
+const{ crearUsuario,loginUsuario,revalidarToken, loginUsuarioAdmin, revalidarTokenAdmin, loginGoogle, activarUsuario, recuperacionUsuario,activarCuenta, restablecerPassword, getUsuario,getUsuarioInactivos} = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarJWTAdmin } = require('../middlewares/validar-jwt-admin');
+
 
 
 const router = Router();
@@ -36,6 +38,9 @@ router.post( '/',[
 
 router.put( '/activar' , activarUsuario);
 
+router.put( '/activarcuenta' , activarCuenta);
+
+
 router.post( '/admin',[
 
     
@@ -47,6 +52,10 @@ router.post( '/admin',[
 
 //Validar token 
 //LO DEJAMOS AQUI POR HOY
+
+router.get( '/inactivos' , validarJWTAdmin , getUsuarioInactivos);
+
+
 router.get( '/renew' , validarJWT , revalidarToken);
 
 router.get( '/usuario/:id' , getUsuario);
