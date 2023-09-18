@@ -38,7 +38,7 @@ router.post( '/',[
 
 router.put( '/activar' , activarUsuario);
 
-router.put( '/activarcuenta' , activarCuenta);
+router.put( '/activarcuenta/:id' , activarCuenta);
 
 
 router.post( '/admin',[
