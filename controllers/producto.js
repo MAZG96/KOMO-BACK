@@ -64,8 +64,7 @@ const listarProducto = (req, res) => {
   productoModel.findAll({
     where: {
     dias_publicados: {
-      //[Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
-      [Op.like]: '%'
+      [Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
     }
    },
    order: [
@@ -98,6 +97,9 @@ const listarSugerenciasProductos = (req, res) => {
         //[Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
         [Op.like]: '%'+req.params.q+'%'
 
+      },
+      dias_publicados: {
+        [Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
       }
 
    },
@@ -148,6 +150,9 @@ const listarProductosCategorias = (req,res) => {
   productoModel.findAll({
     where: {
       id_categoria: req.params.id,
+      dias_publicados: {
+        [Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
+      }
     }
   })
     .then(productos => 
