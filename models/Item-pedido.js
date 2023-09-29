@@ -35,6 +35,9 @@ const itemPedidoModel = db.define('item-pedidos', {
       type: Sequelize.STRING,
       defaultValue: ''
     },
+    peso_producto: {
+      type: Sequelize.STRING
+    },
     recogida: {
       type: Sequelize.STRING,
     },

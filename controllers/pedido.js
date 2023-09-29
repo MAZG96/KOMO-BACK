@@ -223,6 +223,7 @@ const notificar_pedido_admin = (req, res) => {
   const pedido = req.body;
 
 
+
   itemPedidoModel.findAll({
     where: {
       id_pedido: pedido.id,
@@ -273,7 +274,7 @@ const notificar_pedido_admin = (req, res) => {
   
   var mailOptions = {
     from: 'hola@komolocalfoods.com',
-    to: ["miguelzara96@outlook.es","hola@komolocalfoods.com"],
+    to: ["miguelzara96@outlook.es","komolocalfoods@gmail.com"],
     subject: 'Pedido KOMO',
     template: 'recover',
     context: {
@@ -306,6 +307,60 @@ const notificar_pedido_admin = (req, res) => {
       console.log('Email enviado: ' + info.response);
     }
   });
+
+  notificacionModel.findOne({
+    where: {
+      id_usuario: 78
+    }
+  })
+    .then(notificacion => {
+
+      const payload = {
+        "notification": {
+          "title": "Nuevo pedido KOMO",
+          "body": "Acaban de realizar un nuevo pedido",
+          "vibrate": [100,50,100],
+          "image": "https://komolocalfoods.com/assets/productos/komo-logo.png",
+          "actions": [{
+            "action": "explore",
+            "title": "Ir a KOMOLOCALFOODS"
+          }],
+          data: {
+            onActionClick: {
+                default: { operation: 'openWindow' },
+                bar: {
+                    operation: 'focusLastFocusedOrOpen',
+                    url: 'https://komolocalfoods.com/backoffice',
+                },
+                baz: {
+                    operation: 'navigateLastFocusedOrOpen',
+                    url: 'https://komolocalfoods.com/backoffice',
+                },
+            },
+        }
+        }
+      }
+
+      const token = {
+        "endpoint": notificacion.endpoint,
+        "expirationTime": null,
+        "keys": 
+        {
+          "auth": notificacion.auth,
+          "p256dh": notificacion.p256dh
+        }
+      }
+
+      Webpush.sendNotification(
+        token,
+        JSON.stringify(payload))
+        .then(res => {
+          console.log(enviado);
+        }).catch ( err => {
+          console.log("USUARIO SIN PERMISOS, KEYS MAL");
+        })
+  
+    })
 
   return res.status(200).json(cart)
     })
@@ -427,62 +482,6 @@ const notificar_venta = (req, res) => {
     })
 
 
-    notificacionModel.findOne({
-      where: {
-        id_usuario: 78
-      }
-    })
-      .then(notificacion => {
-  
-        console.log(notificacion)
-        const payload = {
-          "notification": {
-            "title": "Nuevo pedido KOMO",
-            "body": "Acaban de realizar un nuevo pedido",
-            "vibrate": [100,50,100],
-            "image": "https://komolocalfoods.com/assets/productos/komo-logo.png",
-            "actions": [{
-              "action": "explore",
-              "title": "Ir a KOMOLOCALFOODS"
-            }],
-            data: {
-              onActionClick: {
-                  default: { operation: 'openWindow' },
-                  bar: {
-                      operation: 'focusLastFocusedOrOpen',
-                      url: 'https://komolocalfoods.com/backoffice',
-                  },
-                  baz: {
-                      operation: 'navigateLastFocusedOrOpen',
-                      url: 'https://komolocalfoods.com/backoffice',
-                  },
-              },
-          }
-          }
-        }
-  
-        const token = {
-          "endpoint": notificacion.endpoint,
-          "expirationTime": null,
-          "keys": 
-          {
-            "auth": notificacion.auth,
-            "p256dh": notificacion.p256dh
-          }
-        }
-  
-        Webpush.sendNotification(
-          token,
-          JSON.stringify(payload))
-          .then(res => {
-            console.log(enviado);
-          }).catch ( err => {
-            console.log("USUARIO SIN PERMISOS, KEYS MAL");
-          })
-    
-      })
-
-
 
   return res.status(200).json(itempedido)
     })
@@ -586,6 +585,7 @@ module.exports = {
   insertarPedido,
   getPedido,
   notificar_pedido,
+  notificar_pedido_admin,
   notificar_venta,
   listarPedidoUsuario,
   listarDatosGrafica,

@@ -1,14 +1,11 @@
 const{ Router } = require('express');
 const{ check } = require('express-validator');
-const{ listarPedido, insertarPedido, getPedido, listarPedidoUsuario, updatePedido,listarDatosGrafica,notificar_pedido, notificar_venta} = require('../controllers/pedido');
+const{ listarPedido, insertarPedido, getPedido, listarPedidoUsuario, updatePedido,listarDatosGrafica,notificar_pedido, notificar_venta, notificar_pedido_admin} = require('../controllers/pedido');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 
 const router = Router();
-
-
-const productoController = require('../controllers/pedido');
 
 router.get( '/'  ,validarJWT,listarPedido); //falta VALIDAR TOKEN
 
@@ -28,6 +25,9 @@ router.post( '/' ,[
 
 router.post( '/send'  ,notificar_pedido);
 router.post( '/sendventa'  ,notificar_venta);
+
+
+router.post( '/send_admin'  ,notificar_pedido_admin);
 
 
 router.get( '/:id' ,getPedido);

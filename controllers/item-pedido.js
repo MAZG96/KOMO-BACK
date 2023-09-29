@@ -46,6 +46,7 @@ const insertarItemPedido = (req, res) => {
     id_productor: cart[_i].id_productor,
     id_ups: cart[_i].id_ups,
     recogida: cart[_i].recogida,
+    peso_producto: cart[_i].peso_producto,
     pago_recogida: cart[_i].pago_recogida,
     })
   }
@@ -203,7 +204,7 @@ const updatePedido = (req, res) => {
 
 
 const updateItemPedido = (req, res) => {
-  const { id,cantidad, foto, precio , nombre, id_producto, id_pedido, pago_recogida, id_ups, recogida  } = req.body;
+  const { id,cantidad, foto, precio , nombre, id_producto, id_pedido, pago_recogida, id_ups,peso_producto, recogida  } = req.body;
 
   itemPedidoModel.update({
     nombre,
@@ -214,6 +215,7 @@ const updateItemPedido = (req, res) => {
     id_pedido,
     pago_recogida,
     recogida,
+    peso_producto,
     id_ups
   },
   {
