@@ -64,7 +64,7 @@ const listarProducto = (req, res) => {
   productoModel.findAll({
     where: {
     dias_publicados: {
-      [Op.like]: '%'+day+'%' //comprobar fecha que se peude comprar
+      [Op.like]: '%'+day+'%' //comprobar fecha que se puede comprar
     }
    },
    order: [
