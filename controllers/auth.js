@@ -251,7 +251,7 @@ const crearUsuario = async (req, res) => {
     const usuario = await usuarioModel.findOne({ where: { email: email} }); // comprobamos que no existe un usuario con el email
 
     if( usuario !== null ){
-        return res.status(400).json({
+        return res.status(200).json({
             ok:false,
             msg:'Usuario existe con este email'
         });
