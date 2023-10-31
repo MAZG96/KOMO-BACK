@@ -8,7 +8,7 @@ const { Op, Sequelize } = require("sequelize");
 
 //POST
 const insertarZona = (req, res) => {
-  const { nombre, provincia,cp_inicio, cp_fin,horario,direccion } = req.body;
+  const { nombre, provincia,cp_inicio, cp_fin,horario,direccion,tipo,notas_productor,notas_comprador } = req.body;
 
   
   zonaModel.create({
@@ -17,7 +17,10 @@ const insertarZona = (req, res) => {
     cp_inicio,
     cp_fin, 
     horario,
-    direccion
+    direccion,
+    tipo,
+    notas_productor,
+    notas_comprador
   })
     .then(zona => res.send(zona));
 }
@@ -90,7 +93,7 @@ const listarZonasProvincia = (req,res) => {
 
 
 const updateZona = (req, res) => {
-  const { nombre, provincia, cp_inicio, cp_fin,horario,direccion } = req.body;
+  const { nombre, provincia, cp_inicio, cp_fin,horario,direccion,tipo,notas_productor,notas_comprador } = req.body;
 
   console.log(req.body);
 
@@ -101,7 +104,10 @@ const updateZona = (req, res) => {
     cp_inicio,
     cp_fin,
     horario,
-    direccion
+    direccion,
+    tipo,
+    notas_productor,
+    notas_comprador
   },
   {
   where: {id: req.params.id}

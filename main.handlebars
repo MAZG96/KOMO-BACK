@@ -114,6 +114,18 @@ float: left;
 
      </div>
 
+     {{#if zona_direccion}}
+     <div class="grid-item"
+     style="padding: 10px; border: 1px solid black"
+     >
+
+          <h3 style="text-align: center;">Instrucciones Venta Unificar</h3>
+          <p>Nombre: {{zona_nombre}}</p>
+          <p>Notas: <br>{{notas_comprador}}<br></p>
+          <p>Dirección: {{zona_direccion}}</p>
+     </div>
+     {{/if}}
+
      <div class="grid-item"
      style="padding: 10px; border: 1px solid black"
      >

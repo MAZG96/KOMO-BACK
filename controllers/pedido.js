@@ -5,6 +5,7 @@ const itemPedidoModel = require("../models/Item-pedido");
 const usuarioModel = require("../models/Usuario");
 const notificacionModel = require("../models/Notificacion");
 const infousuarioModel = require("../models/Info-usuario")
+const zonaModel = require("../models/Zona")
 
 const  Webpush  = require('web-push');
 
@@ -175,30 +176,74 @@ const notificar_pedido = (req, res) => {
   .then(usuario => {
     console.log(usuario);
   
+    zonaModel.findOne({
+      where: {
+        id: cart[0].id_ups, 
+      },
+      raw: true,
+    })
+    .then(zona => {
+
+      if(zona){
+        console.log("HAY");
+        var mailOptions = {
+          from: 'hola@komolocalfoods.com',
+          to: ["miguelzara96@outlook.es"], //[pedido.email,"miguelzara96@outlook.es"],
+          subject: 'Pedido KOMO',
+          template: 'recover',
+          context: {
+            nombre: pedido.nombre,
+            apellidos: pedido.apellidos,
+            calle: pedido.calle,
+            piso: pedido.piso,
+            localidad: pedido.localidad,
+            provincia: pedido.provincia,
+            telefono: pedido.telefono,
+            email: pedido.email,
+            codigo_postal: pedido.codigo_postal,
+            total: pedido.total,
+            estado: pedido.estado,
+            createdAt: pedido.createdAt,
+            id: pedido.id,
+            id_usuario: pedido.id_usuario,
+            productos: cart,
+            zona_direccion: zona.direccion,
+            zona_nombre: zona.nombre,
+            notas_comprador: zona.notas_comprador
+          }
+        };
+
+      }else{
+
+        var mailOptions = {
+          from: 'hola@komolocalfoods.com',
+          to: ["miguelzara96@outlook.es"], //[pedido.email,"miguelzara96@outlook.es"],
+          subject: 'Pedido KOMO',
+          template: 'recover',
+          context: {
+            nombre: pedido.nombre,
+            apellidos: pedido.apellidos,
+            calle: pedido.calle,
+            piso: pedido.piso,
+            localidad: pedido.localidad,
+            provincia: pedido.provincia,
+            telefono: pedido.telefono,
+            email: pedido.email,
+            codigo_postal: pedido.codigo_postal,
+            total: pedido.total,
+            estado: pedido.estado,
+            createdAt: pedido.createdAt,
+            id: pedido.id,
+            id_usuario: pedido.id_usuario,
+            productos: cart
+          }
+        };
+
+      }
+
+    
   
-  var mailOptions = {
-    from: 'hola@komolocalfoods.com',
-    to: [pedido.email,"miguelzara96@outlook.es"],
-    subject: 'Pedido KOMO',
-    template: 'recover',
-    context: {
-      nombre: pedido.nombre,
-      apellidos: pedido.apellidos,
-      calle: pedido.calle,
-      piso: pedido.piso,
-      localidad: pedido.localidad,
-      provincia: pedido.provincia,
-      telefono: pedido.telefono,
-      email: pedido.email,
-      codigo_postal: pedido.codigo_postal,
-      total: pedido.total,
-      estado: pedido.estado,
-      createdAt: pedido.createdAt,
-      id: pedido.id,
-      id_usuario: pedido.id_usuario,
-      productos: cart
-    }
-  };
+  
 
 
 
@@ -215,6 +260,7 @@ const notificar_pedido = (req, res) => {
   return res.status(200).json(cart)
     })
   })
+})
     
 }
 

@@ -24,6 +24,15 @@ const zonaModel = db.define('zona', {
     },
     cp_fin: {
       type: Sequelize.STRING
+    },
+    tipo: {
+      type: Sequelize.STRING
+    },
+    notas_productor: {
+      type: Sequelize.STRING
+    },
+    notas_comprador: {
+      type: Sequelize.STRING
     }
   });
   
