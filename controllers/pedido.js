@@ -184,11 +184,13 @@ const notificar_pedido = (req, res) => {
     })
     .then(zona => {
 
+      console.log(zona);
+
       if(zona){
         console.log("HAY");
         var mailOptions = {
           from: 'hola@komolocalfoods.com',
-          to: ["miguelzara96@outlook.es"], //[pedido.email,"miguelzara96@outlook.es"],
+          to: [pedido.email,"miguelzara96@outlook.es"],
           subject: 'Pedido KOMO',
           template: 'recover',
           context: {
@@ -217,7 +219,7 @@ const notificar_pedido = (req, res) => {
 
         var mailOptions = {
           from: 'hola@komolocalfoods.com',
-          to: ["miguelzara96@outlook.es"], //[pedido.email,"miguelzara96@outlook.es"],
+          to: [pedido.email,"miguelzara96@outlook.es"],
           subject: 'Pedido KOMO',
           template: 'recover',
           context: {
